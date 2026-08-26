@@ -88,13 +88,25 @@ export default function TaskItem({
 
         {task.dueDate && (
           <p
-            className={`mt-2 text-xs ${
+            className={`mt-2 flex items-center gap-1.5 text-xs ${
               overdue
                 ? "font-medium text-red-600"
                 : "text-slate-500 dark:text-slate-400"
             }`}
           >
-            📅 {formatDate(task.dueDate)}
+            <svg
+              viewBox="0 0 20 20"
+              fill="currentColor"
+              className="h-3.5 w-3.5"
+              aria-hidden="true"
+            >
+              <path
+                fillRule="evenodd"
+                d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v9a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zM4 8h12v7H4V8z"
+                clipRule="evenodd"
+              />
+            </svg>
+            {formatDate(task.dueDate)}
             {overdue && " (atrasada)"}
           </p>
         )}

@@ -1,52 +1,51 @@
-# 📋 To-do List
+# To-do List
 
-Aplicação web de lista de tarefas desenvolvida como teste técnico. Permite
-adicionar, listar, editar, excluir e **pesquisar** tarefas, com validações e
-persistência em banco de dados.
+Aplicação web de lista de tarefas. Permite adicionar, listar, editar, excluir e
+pesquisar tarefas, com validações e persistência em banco de dados.
 
-## ✨ Funcionalidades
+## Funcionalidades
 
-- ✅ **Adicionar** tarefa
-- 📃 **Listar** tarefas (pendentes primeiro, mais recentes no topo)
-- ✏️ **Editar** tarefa
-- 🗑️ **Excluir** tarefa (com confirmação)
-- 🔎 **Pesquisar** por título ou descrição (com debounce)
-- 🏷️ **Filtrar** por status (Pendente / Concluída)
-- ☑️ Marcar como concluída em um clique
-- 📅 Destaque para tarefas **atrasadas**
+- Adicionar tarefa
+- Listar tarefas (pendentes primeiro, mais recentes no topo)
+- Editar tarefa
+- Excluir tarefa (com confirmação)
+- Pesquisar por título ou descrição (com debounce)
+- Filtrar por status (Pendente / Concluída)
+- Marcar como concluída em um clique
+- Destaque para tarefas atrasadas
 
 ### Campos da tarefa
 
-| Campo         | Tipo                       | Regras                          |
-| ------------- | -------------------------- | ------------------------------- |
-| Título        | Texto curto                | **Obrigatório** (até 120 chars) |
-| Descrição     | Texto livre                | Opcional                        |
-| Data prevista | Seletor de data (`date`)   | Opcional, mas deve ser válida   |
-| Status        | Pendente / Concluída       | Default: Pendente               |
+| Campo         | Tipo                     | Regras                          |
+| ------------- | ------------------------ | ------------------------------- |
+| Título        | Texto curto              | Obrigatório (até 120 caracteres) |
+| Descrição     | Texto livre              | Opcional                        |
+| Data prevista | Seletor de data (`date`) | Opcional, mas deve ser válida   |
+| Status        | Pendente / Concluída     | Padrão: Pendente                |
 
-As validações são aplicadas **no cliente** (feedback rápido) e **no servidor**
-(fonte da verdade), na função compartilhada [`validateTask`](src/lib/validation.ts).
+As validações são aplicadas no cliente (feedback rápido) e no servidor (fonte da
+verdade), na função compartilhada [`validateTask`](src/lib/validation.ts).
 
-## 🛠️ Tecnologias
+## Tecnologias
 
-- **[Next.js 16](https://nextjs.org/)** (App Router) — front-end React + back-end via Route Handlers
-- **[React 19](https://react.dev/)** + **TypeScript**
-- **[Tailwind CSS 4](https://tailwindcss.com/)** — estilização
-- **[Prisma 6](https://www.prisma.io/)** — ORM
-- **[Neon](https://neon.tech/)** — PostgreSQL serverless
-- **[Vercel](https://vercel.com/)** — deploy
+- Next.js (App Router): front-end React e back-end via Route Handlers
+- React + TypeScript
+- Tailwind CSS
+- Prisma (ORM)
+- PostgreSQL (Neon)
+- Deploy na Vercel
 
-## 🚀 Rodando localmente
+## Rodando localmente
 
 ### 1. Pré-requisitos
 
-- Node.js 18+ (testado no 24)
-- Um banco PostgreSQL — recomendado o [Neon](https://neon.tech) (grátis)
+- Node.js 18 ou superior
+- Um banco PostgreSQL (recomendado o [Neon](https://neon.tech), gratuito)
 
 ### 2. Instalação
 
 ```bash
-git clone <url-do-repositorio>
+git clone https://github.com/MuriloMandelli/todo-list-app.git
 cd todo-list-app
 npm install
 ```
@@ -64,8 +63,8 @@ DATABASE_URL="postgresql://...-pooler...neon.tech/db?sslmode=require"
 DIRECT_URL="postgresql://...neon.tech/db?sslmode=require"
 ```
 
-- `DATABASE_URL`: string **com** pooler (host contém `-pooler`), usada pela aplicação.
-- `DIRECT_URL`: string **sem** pooler, usada pelo Prisma nas migrations.
+- `DATABASE_URL`: string com pooler (o host contém `-pooler`), usada pela aplicação.
+- `DIRECT_URL`: string sem pooler, usada pelo Prisma nas migrations.
 
 ### 4. Banco de dados
 
@@ -79,42 +78,38 @@ npx prisma migrate dev
 npm run dev
 ```
 
-Acesse [http://localhost:3000](http://localhost:3000).
+Acesse http://localhost:3000.
 
-## 🌐 API
+## API
 
 Base: `/api/tasks`
 
-| Método   | Rota              | Descrição                                       |
-| -------- | ----------------- | ----------------------------------------------- |
-| `GET`    | `/api/tasks`      | Lista tarefas. Query: `?search=` e `?status=`   |
-| `POST`   | `/api/tasks`      | Cria tarefa                                      |
-| `PUT`    | `/api/tasks/:id`  | Atualiza tarefa                                  |
-| `DELETE` | `/api/tasks/:id`  | Exclui tarefa                                    |
+| Método   | Rota             | Descrição                                     |
+| -------- | ---------------- | --------------------------------------------- |
+| `GET`    | `/api/tasks`     | Lista tarefas. Query: `?search=` e `?status=` |
+| `POST`   | `/api/tasks`     | Cria tarefa                                    |
+| `PUT`    | `/api/tasks/:id` | Atualiza tarefa                                |
+| `DELETE` | `/api/tasks/:id` | Exclui tarefa                                  |
 
-## 📁 Estrutura
+## Estrutura
 
 ```
 prisma/
-  schema.prisma          # modelo Task + enum de status
+  schema.prisma             # modelo Task e enum de status
 src/
   app/
-    api/tasks/route.ts        # GET (lista/busca) e POST
-    api/tasks/[id]/route.ts   # PUT e DELETE
-    page.tsx                  # tela principal
+    api/tasks/route.ts       # GET (lista/busca) e POST
+    api/tasks/[id]/route.ts  # PUT e DELETE
+    page.tsx                 # tela principal
     layout.tsx
   components/
-    TaskForm.tsx         # modal de criar/editar
-    TaskItem.tsx         # card de cada tarefa
+    TaskForm.tsx             # modal de criar/editar
+    TaskItem.tsx             # card de cada tarefa
   lib/
-    prisma.ts            # singleton do Prisma Client
-    validation.ts        # validação compartilhada
-    serialize.ts         # Prisma -> formato da API
-    api.ts               # cliente HTTP do front
+    prisma.ts                # singleton do Prisma Client
+    validation.ts            # validação compartilhada
+    serialize.ts             # Prisma para o formato da API
+    api.ts                   # cliente HTTP do front
   types/
-    task.ts              # tipos compartilhados
+    task.ts                  # tipos compartilhados
 ```
-
-## 📝 Relato de entrega
-
-Veja [RELATO.md](RELATO.md).

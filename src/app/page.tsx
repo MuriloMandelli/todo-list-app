@@ -114,7 +114,7 @@ export default function Home() {
       {/* Cabeçalho */}
       <header className="mb-6">
         <h1 className="text-3xl font-bold text-slate-900 dark:text-white">
-          ✅ Lista de Tarefas
+          Lista de Tarefas
         </h1>
         <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
           {stats.total} tarefa{stats.total === 1 ? "" : "s"} • {stats.pending}{" "}
@@ -184,7 +184,7 @@ export default function Home() {
           <p className="text-slate-500 dark:text-slate-400">
             {hasFilters
               ? "Nenhuma tarefa encontrada para esses filtros."
-              : "Nenhuma tarefa ainda. Crie a primeira! 🚀"}
+              : "Nenhuma tarefa ainda. Crie a primeira."}
           </p>
         </div>
       ) : (

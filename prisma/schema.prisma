@@ -1,4 +1,4 @@
-// Prisma schema — To-do List
+// Prisma schema da To-do List
 // Banco: PostgreSQL (Neon). Docs: https://pris.ly/d/prisma-schema
 
 generator client {

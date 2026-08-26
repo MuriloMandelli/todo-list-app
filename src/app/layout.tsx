@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "To-do List",
-  description: "Aplicação de lista de tarefas — teste técnico",
+  description: "Aplicação de lista de tarefas",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
