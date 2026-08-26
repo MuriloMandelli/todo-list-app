@@ -1,36 +1,120 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 📋 To-do List
 
-## Getting Started
+Aplicação web de lista de tarefas desenvolvida como teste técnico. Permite
+adicionar, listar, editar, excluir e **pesquisar** tarefas, com validações e
+persistência em banco de dados.
 
-First, run the development server:
+## ✨ Funcionalidades
+
+- ✅ **Adicionar** tarefa
+- 📃 **Listar** tarefas (pendentes primeiro, mais recentes no topo)
+- ✏️ **Editar** tarefa
+- 🗑️ **Excluir** tarefa (com confirmação)
+- 🔎 **Pesquisar** por título ou descrição (com debounce)
+- 🏷️ **Filtrar** por status (Pendente / Concluída)
+- ☑️ Marcar como concluída em um clique
+- 📅 Destaque para tarefas **atrasadas**
+
+### Campos da tarefa
+
+| Campo         | Tipo                       | Regras                          |
+| ------------- | -------------------------- | ------------------------------- |
+| Título        | Texto curto                | **Obrigatório** (até 120 chars) |
+| Descrição     | Texto livre                | Opcional                        |
+| Data prevista | Seletor de data (`date`)   | Opcional, mas deve ser válida   |
+| Status        | Pendente / Concluída       | Default: Pendente               |
+
+As validações são aplicadas **no cliente** (feedback rápido) e **no servidor**
+(fonte da verdade), na função compartilhada [`validateTask`](src/lib/validation.ts).
+
+## 🛠️ Tecnologias
+
+- **[Next.js 16](https://nextjs.org/)** (App Router) — front-end React + back-end via Route Handlers
+- **[React 19](https://react.dev/)** + **TypeScript**
+- **[Tailwind CSS 4](https://tailwindcss.com/)** — estilização
+- **[Prisma 6](https://www.prisma.io/)** — ORM
+- **[Neon](https://neon.tech/)** — PostgreSQL serverless
+- **[Vercel](https://vercel.com/)** — deploy
+
+## 🚀 Rodando localmente
+
+### 1. Pré-requisitos
+
+- Node.js 18+ (testado no 24)
+- Um banco PostgreSQL — recomendado o [Neon](https://neon.tech) (grátis)
+
+### 2. Instalação
+
+```bash
+git clone <url-do-repositorio>
+cd todo-list-app
+npm install
+```
+
+### 3. Variáveis de ambiente
+
+Copie o exemplo e preencha com as suas credenciais do Neon:
+
+```bash
+cp .env.example .env
+```
+
+```env
+DATABASE_URL="postgresql://...-pooler...neon.tech/db?sslmode=require"
+DIRECT_URL="postgresql://...neon.tech/db?sslmode=require"
+```
+
+- `DATABASE_URL`: string **com** pooler (host contém `-pooler`), usada pela aplicação.
+- `DIRECT_URL`: string **sem** pooler, usada pelo Prisma nas migrations.
+
+### 4. Banco de dados
+
+```bash
+npx prisma migrate dev
+```
+
+### 5. Executar
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Acesse [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🌐 API
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Base: `/api/tasks`
 
-## Learn More
+| Método   | Rota              | Descrição                                       |
+| -------- | ----------------- | ----------------------------------------------- |
+| `GET`    | `/api/tasks`      | Lista tarefas. Query: `?search=` e `?status=`   |
+| `POST`   | `/api/tasks`      | Cria tarefa                                      |
+| `PUT`    | `/api/tasks/:id`  | Atualiza tarefa                                  |
+| `DELETE` | `/api/tasks/:id`  | Exclui tarefa                                    |
 
-To learn more about Next.js, take a look at the following resources:
+## 📁 Estrutura
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```
+prisma/
+  schema.prisma          # modelo Task + enum de status
+src/
+  app/
+    api/tasks/route.ts        # GET (lista/busca) e POST
+    api/tasks/[id]/route.ts   # PUT e DELETE
+    page.tsx                  # tela principal
+    layout.tsx
+  components/
+    TaskForm.tsx         # modal de criar/editar
+    TaskItem.tsx         # card de cada tarefa
+  lib/
+    prisma.ts            # singleton do Prisma Client
+    validation.ts        # validação compartilhada
+    serialize.ts         # Prisma -> formato da API
+    api.ts               # cliente HTTP do front
+  types/
+    task.ts              # tipos compartilhados
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 📝 Relato de entrega
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Veja [RELATO.md](RELATO.md).

@@ -1,0 +1,31 @@
+// Prisma schema — To-do List
+// Banco: PostgreSQL (Neon). Docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  // Conexão direta (sem pooler) usada nas migrations. No Neon é a URL sem "-pooler".
+  directUrl = env("DIRECT_URL")
+}
+
+enum TaskStatus {
+  PENDENTE
+  CONCLUIDA
+}
+
+model Task {
+  id          String     @id @default(cuid())
+  title       String
+  description String?
+  dueDate     DateTime?  @db.Date
+  status      TaskStatus @default(PENDENTE)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  @@index([status])
+  @@index([createdAt])
+}
